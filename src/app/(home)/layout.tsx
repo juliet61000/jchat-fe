@@ -1,3 +1,4 @@
+import { Menu, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,43 +8,40 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      {/* 헤더 */}
+    <div className="flex flex-col min-h-screen max-w-md mx-auto bg-white">
+      {/* 헤더 - 모바일 네비게이션 */}
       <header className="sticky top-0 z-50 bg-white border-b">
-        <div className="container mx-auto px-4 py-4">
+        <div className="flex items-center justify-between px-4 py-3">
+          {/* 메뉴 아이콘 */}
+          <button className="p-2 -ml-2">
+            <Menu className="w-6 h-6 text-gray-700" />
+          </button>
+
+          {/* 로고 */}
           <Link href="/">
             <Image
               src="/logo.png"
-              alt="main"
-              width={120}
-              height={40}
+              alt="jChat"
+              width={80}
+              height={26}
               className="cursor-pointer"
             />
           </Link>
+
+          {/* 프로필 아이콘 */}
+          <button className="p-2 -mr-2">
+            <User className="w-6 h-6 text-gray-700" />
+          </button>
         </div>
       </header>
 
-      {/* 메인 */}
-      <main className="container mx-auto px-4 py-6">
-        <div className="flex gap-6">
-          {/* 사이드바 */}
-          <aside className="w-64 hidden lg:block">
-            {/* <SidebarProvider>
-              <AppSidebar />
-            </SidebarProvider> */}
-          </aside>
+      {/* 메인 콘텐츠 */}
+      <main className="flex-1 overflow-y-auto scrollbar-hide">{children}</main>
 
-          {/* 콘텐츠 영역 */}
-          <div className="flex-1">{children}</div>
-        </div>
-      </main>
-
-      {/* 푸터 (선택) */}
-      <footer className="border-t mt-auto">
-        <div className="container mx-auto px-4 py-6 text-center text-sm text-gray-600">
-          © 2025 jChat. All rights reserved.
-        </div>
+      {/* 푸터 */}
+      <footer className="border-t py-3 bg-gray-50 safe-bottom">
+        <div className="text-center text-xs text-gray-500">© 2025 jChat</div>
       </footer>
-    </>
+    </div>
   );
 }
