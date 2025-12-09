@@ -15,21 +15,25 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { IAuthLoginReqDto } from "@/interface/auth/interfaceAuthLogin";
 import { getAuthLogin } from "@/service/auth/apiAuthLogin";
+import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 
 const Login = () => {
-  /**
+  /***************
    * 지역변수 선언부
-   */
+   ***************/
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // 로그인 form Ref
   const formRef = useRef<HTMLFormElement>(null);
 
-  /**
+  // useRouter
+  const router = useRouter();
+
+  /***************
    * 함수 선언부
-   */
+   ***************/
 
   /**
    * 아이디/패스워드 인풋 onInput 이벤트
@@ -88,6 +92,13 @@ const Login = () => {
     setIsLoading(false);
   };
 
+  /**
+   * Sign Up 버튼 이벤트
+   */
+  const handleSignUpBtnClick = () => {
+    router.push("/mem/register");
+  };
+
   return (
     <>
       <Loading isLoading={isLoading} />
@@ -96,7 +107,9 @@ const Login = () => {
           <CardTitle>로그인</CardTitle>
           <CardDescription>로그인을 해주세요</CardDescription>
           <CardAction>
-            <Button variant="link">Sign Up</Button>
+            <Button onClick={handleSignUpBtnClick} variant="link">
+              Sign Up
+            </Button>
           </CardAction>
         </CardHeader>
         <CardContent>
