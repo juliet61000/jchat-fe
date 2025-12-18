@@ -1,12 +1,17 @@
+import LoginUserHead from "@/components/mem/LoginUserHead";
+import { getUser } from "@/utils/mem/userUtil";
 import { Menu, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // 서버에서 초기 유저 정보 파싱
+  const initialUser = await getUser();
+
   return (
     <div className="flex flex-col min-h-screen max-w-md mx-auto bg-white">
       {/* 헤더 - 모바일 네비게이션 */}
@@ -16,7 +21,8 @@ export default function RootLayout({
           <button className="p-2 -ml-2">
             <Menu className="w-6 h-6 text-gray-700" />
           </button>
-
+          {/* 로그인상태 컴포넌트 */}
+          <LoginUserHead initialUser={initialUser} />
           {/* 로고 */}
           <Link href="/">
             <Image
@@ -27,7 +33,6 @@ export default function RootLayout({
               className="cursor-pointer"
             />
           </Link>
-
           {/* 프로필 아이콘 */}
           <button className="p-2 -mr-2">
             <User className="w-6 h-6 text-gray-700" />

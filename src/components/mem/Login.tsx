@@ -15,18 +15,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { IAuthLoginReqDto } from "@/interface/auth/interfaceAuthLogin";
 import { getAuthLogin } from "@/service/auth/apiAuthLogin";
-import { getUser } from "@/utils/mem/userUtil";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
 const Login = () => {
   /***************
    * 지역변수 선언부
    ***************/
 
-  const [user, setUser] = useState();
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const queryClient = useQueryClient();
 
   // 로그인 form Ref
   const formRef = useRef<HTMLFormElement>(null);
@@ -105,6 +105,9 @@ const Login = () => {
 
     // 정상 인증
     if (res.code === 0) {
+      // 로그인 성공 후 user 쿼리 무효화
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+
       router.push("/");
     }
     // 아이디 조회 불가
@@ -131,13 +134,6 @@ const Login = () => {
   const handleSignUpBtnClick = () => {
     router.push("/mem/register");
   };
-
-  useEffect(() => {
-    const test = async () => {
-      const res = await getUser();
-      if (res != null) setUser(res);
-    };
-  }, []);
 
   return (
     <>
