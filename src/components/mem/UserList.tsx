@@ -3,12 +3,12 @@
 import BackHeader from "@/components/common/BackHeader";
 import Loading from "@/components/common/Loading";
 import UserCard from "@/components/mem/UserCard";
-import { ISearchFriendListResDto } from "@/interface/mem/interfaceMemFriend";
+import { ISearchFriendResDto } from "@/interface/mem/interfaceMemFriend";
 import { apiSearchFriendList } from "@/service/mem/apiMemFriend";
 import { useQuery } from "@tanstack/react-query";
 
 const UserList = () => {
-  const { data, isLoading, isFetching } = useQuery<ISearchFriendListResDto[]>({
+  const { data, isLoading, isFetching } = useQuery<ISearchFriendResDto>({
     queryKey: ["rcmUserList"],
     queryFn: () => apiSearchFriendList(),
     refetchOnMount: "always",
@@ -25,8 +25,9 @@ const UserList = () => {
 
           <div className="flex-1 overflow-y-auto scrollbar-smooth">
             {data &&
-              data.length > 0 &&
-              data.map((obj, idx) => (
+              data.friendList &&
+              data.friendList.length > 0 &&
+              data.friendList.map((obj, idx) => (
                 <UserCard
                   key={idx}
                   userId={obj.id}

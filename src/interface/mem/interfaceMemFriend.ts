@@ -14,7 +14,7 @@ export interface IComOtherUser {
 /**
  * 친구목록조회 RES DTO
  */
-export interface ISearchFriendListResDto {
+export interface ISearchFriendResDto {
   myUserNo?: number;
   friendList: IComOtherUser[];
 }
