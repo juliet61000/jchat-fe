@@ -1,22 +1,47 @@
 import ChatRoom from "@/components/chat/ChatRoom";
+import { ISearchChatRoomResDto } from "@/interface/chat/interfaceChat";
+import { apiSearchChatRoom } from "@/service/chat/apiChat";
 import { getUser } from "@/utils/mem/userUtil";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 
 interface IProps {
   params: IParams;
 }
 
 interface IParams {
-  roomId: string;
+  roomId: number;
 }
 
 const page = async (params: IProps) => {
+  // 동적 세그멘트
   const segument = await params.params;
-  console.log("segument", segument);
+  // 채팅방번호
   const roomId = segument.roomId;
-  console.log(roomId);
-
+  // 유저정보 조회
   const user = await getUser();
-  return <ChatRoom user={user} roomName="dd" participantCount={2} />;
+
+  const queryClient = new QueryClient();
+
+  const res = await queryClient.fetchQuery<ISearchChatRoomResDto>({
+    queryKey: ["apiSearchChatRoom", roomId],
+    queryFn: async () => apiSearchChatRoom(roomId),
+    staleTime: Infinity,
+  });
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <ChatRoom
+        user={user}
+        roomId={roomId}
+        roomName={""}
+        participantCount={res.chatRoomUserList.length}
+      />
+    </HydrationBoundary>
+  );
 };
 
 export default page;
